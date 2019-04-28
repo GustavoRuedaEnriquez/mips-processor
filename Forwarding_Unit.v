@@ -11,26 +11,26 @@ module ForwardingUnit(
 
 );
 
-	always @(EX_MEM_RegWrite or MEM_WB_RegWrite or ID_EX_Rs_Reg or ID_EX_Rt_Reg or EX_MEM_Rd_Reg or MEM_WB_Rd_Reg)
+	always @(*)
 	begin 
-		ForwardA = 2'b00;
-		ForwardB = 2'b00;
+		ForwardA <= 2'b00;
+		ForwardB <= 2'b00;
 			
 		if(EX_MEM_RegWrite && (EX_MEM_Rd_Reg != 0) && (EX_MEM_Rd_Reg == ID_EX_Rs_Reg))
 		begin
-			ForwardA = 2'b10;
+			ForwardA <= 2'b10;
 		end
 		if(EX_MEM_RegWrite && (EX_MEM_Rd_Reg != 0) && (EX_MEM_Rd_Reg == ID_EX_Rt_Reg))
 		begin
-			ForwardB = 2'b10;
+			ForwardB <= 2'b10;
 		end
 		 if(MEM_WB_RegWrite && (MEM_WB_Rd_Reg != 0) && (EX_MEM_Rd_Reg != ID_EX_Rs_Reg) && (MEM_WB_Rd_Reg == ID_EX_Rs_Reg)) 
 		begin
-			ForwardA = 2'b01;
+			ForwardA <= 2'b01;
 		end
 		if(MEM_WB_RegWrite && (MEM_WB_Rd_Reg != 0) && (EX_MEM_Rd_Reg != ID_EX_Rt_Reg) && (MEM_WB_Rd_Reg == ID_EX_Rt_Reg))
 		begin
-			ForwardB = 2'b01;
+			ForwardB <= 2'b01;
 		end
 	end
 

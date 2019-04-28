@@ -2,6 +2,7 @@ module IF_ID_Register
 (
   input clk,
   input reset,
+  input Block_IF_ID_Write,
   input [31:0] in_PC_4,
   input [31:0] in_Instruction,
   
@@ -15,7 +16,7 @@ always@(negedge reset or posedge clk) begin
       out_PC_4        <= 0;
       out_Instruction <= 0;
     end
-  else
+  else if(Block_IF_ID_Write != 1)
     begin
       out_PC_4        <= in_PC_4;
       out_Instruction <= in_Instruction;

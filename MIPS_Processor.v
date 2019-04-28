@@ -78,6 +78,11 @@ wire [31:0] Register_To_Use_wire;
 wire [31:0] Entry_ALU_A_wire;
 wire [31:0] Entry_ALU_B_wire;
 
+wire Stall_wire;
+wire Block_PC_Write_wire;
+wire Block_IF_ID_Write_wire;
+wire [10:0] Ctrl_Mux_Output_wire;
+
 wire BranchNE_wire;
 wire NotZeroANDBrachNE;
 wire ZeroANDBrachEQ;
@@ -113,6 +118,7 @@ PC
 (
   .clk(clk),
   .reset(reset),
+  .Block_PC_Write(Block_PC_Write_wire),
   .NewPC(NextPC_wire),
   .PCValue(PC_wire)
 );
@@ -148,6 +154,7 @@ IF_ID_Reg
 (
   .clk(clk),
   .reset(reset),
+  .Block_IF_ID_Write(Block_IF_ID_Write_wire),
   .in_PC_4(PC_4_wire),
   .in_Instruction(Instruction_wire),
   .out_PC_4(IF_ID_out_PC_4_wire),
@@ -159,6 +166,18 @@ IF_ID_Reg
 
 
 //******************************************************************/
+HazardDetectionUnit
+Hazard
+(
+	.ID_EX_MemRead(ID_EX_out_Ctrl_Signals_wire[8]),
+	.ID_EX_Rt_Reg(ID_EX_out_rt_wire),
+	.IF_ID_Rs_Reg(IF_ID_out_Instruction_wire[25:21]),
+	.IF_ID_Rt_Reg(IF_ID_out_Instruction_wire[20:16]),
+	.Stall(Stall_wire),
+	.Block_PC_Write(Block_PC_Write_wire),
+	.Block_IF_ID_Write(Block_IF_ID_Write_wire)
+);
+
 Control
 ControlUnit
 (
@@ -174,6 +193,18 @@ ControlUnit
   .MemtoReg(MemtoReg),
   .Jump(Jump),
   .Jal(Jal)
+);
+
+Multiplexer2to1
+#(
+  .NBits(11)
+)
+MUX_ForControl
+(
+  .Selector(Stall_wire),
+  .MUX_Data0({RegWrite_wire,MemtoReg,MemRead,MemWrite,BranchEQ_wire,ALUSrc_wire,RegDst_wire,ALUOp_wire}),
+  .MUX_Data1(11'b00000000000),
+  .MUX_Output(Ctrl_Mux_Output_wire)
 );
 
 RegisterFile
@@ -203,14 +234,14 @@ ID_EX_Reg
 (
   .clk(clk),
   .reset(reset),
-  .in_Ctrl_RegWrite(RegWrite_wire),
-  .in_Ctrl_MemtoReg(MemtoReg),
-  .in_Ctrl_MemRead(MemRead),
-  .in_Ctrl_MemWrite(MemWrite),
-  .in_Ctrl_BranchEQ(BranchEQ_wire),
-  .in_Ctrl_ALUOp(ALUOp_wire),
-  .in_Ctrl_ALUSrc(ALUSrc_wire),
-  .in_Ctrl_RegDst(RegDst_wire),
+  .in_Ctrl_RegWrite(Ctrl_Mux_Output_wire[10]),
+  .in_Ctrl_MemtoReg(Ctrl_Mux_Output_wire[9]),
+  .in_Ctrl_MemRead(Ctrl_Mux_Output_wire[8]),
+  .in_Ctrl_MemWrite(Ctrl_Mux_Output_wire[7]),
+  .in_Ctrl_BranchEQ(Ctrl_Mux_Output_wire[6]),
+  .in_Ctrl_ALUSrc(Ctrl_Mux_Output_wire[5]),
+  .in_Ctrl_RegDst(Ctrl_Mux_Output_wire[4]),
+  .in_Ctrl_ALUOp(Ctrl_Mux_Output_wire[3:0]),
   .in_InmmediateExtend(InmmediateExtend_wire),
   .in_funct(IF_ID_out_Instruction_wire[5:0]),
   .in_PC_4(IF_ID_out_PC_4_wire),
@@ -218,7 +249,7 @@ ID_EX_Reg
   .in_ReadData2(ReadData2_wire),
   .in_rt(IF_ID_out_Instruction_wire[20:16]),
   .in_rd(IF_ID_out_Instruction_wire[15:11]),
-	.in_rs(IF_ID_out_Instruction_wire[25:21]),
+  .in_rs(IF_ID_out_Instruction_wire[25:21]),
   .in_shamt(IF_ID_out_Instruction_wire[10:6]),
   .out_Ctrl_RegWrite(ID_EX_out_Ctrl_Signals_wire[10]),
   .out_Ctrl_MemtoReg(ID_EX_out_Ctrl_Signals_wire[9]),
@@ -235,7 +266,7 @@ ID_EX_Reg
   .out_ReadData2(ID_EX_out_ReadData2_wire),
   .out_rt(ID_EX_out_rt_wire),
   .out_rd(ID_EX_out_rd_wire),
-	.out_rs(ID_EX_out_rs_wire),
+  .out_rs(ID_EX_out_rs_wire),
   .out_shamt(ID_EX_out_shamt_wire)
 );
 //******************************************************************/
