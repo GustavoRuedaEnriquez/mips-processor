@@ -38,6 +38,7 @@ wire [31:0] ReadData2_wire;
 wire [5:0]  ID_EX_out_funct_wire;
 wire [4:0]  ID_EX_out_rt_wire;
 wire [4:0]  ID_EX_out_rd_wire;
+wire [4:0]  ID_EX_out_rs_wire;
 wire [4:0]  ID_EX_out_shamt_wire;
 wire [10:0] ID_EX_out_Ctrl_Signals_wire;
 wire [31:0] ID_EX_out_InmmediateExtend_wire;
@@ -66,12 +67,16 @@ wire [31:0] EX_MEM_out_WriteData_wire;
 wire [31:0]  ReadDataRAM_wire;
 
 wire [1:0]  MEM_WB_out_Ctrl_Signals_wire;
-wire [4:0] MEM_WB_out_Write_Register_wire;
+wire [4:0]  MEM_WB_out_Write_Register_wire;
 wire [31:0] MEM_WB_out_RAM_Read_Data_wire;
 wire [31:0] MEM_WB_out_ALU_Result_wire;
 //*********************************************//
 
-wire [70:0]  MEMWB_Output_wire;
+wire [1:0] Forward_A_Selector_wire;
+wire [1:0] Forward_B_Selector_wire;
+wire [31:0] Register_To_Use_wire;
+wire [31:0] Entry_ALU_A_wire;
+wire [31:0] Entry_ALU_B_wire;
 
 wire BranchNE_wire;
 wire NotZeroANDBrachNE;
@@ -92,7 +97,7 @@ wire [31:0]  PCPlus8_wire;
 wire [31:0]  BranchAdderMuxOutput_wire;
 wire [31:0]  MUX_PC_wire;
 wire [31:0]  PC_wire;
-wire [31:0]  ReadData2OrInmmediate_wire;
+//wire [31:0]  ReadData2OrInmmediate_wire;
 wire [31:0]  InmmediateExtendAnded_wire;
 wire [31:0]  PCtoBranch_wire;
 wire [31:0]  PCToROM;
@@ -213,6 +218,7 @@ ID_EX_Reg
   .in_ReadData2(ReadData2_wire),
   .in_rt(IF_ID_out_Instruction_wire[20:16]),
   .in_rd(IF_ID_out_Instruction_wire[15:11]),
+	.in_rs(IF_ID_out_Instruction_wire[25:21]),
   .in_shamt(IF_ID_out_Instruction_wire[10:6]),
   .out_Ctrl_RegWrite(ID_EX_out_Ctrl_Signals_wire[10]),
   .out_Ctrl_MemtoReg(ID_EX_out_Ctrl_Signals_wire[9]),
@@ -229,6 +235,7 @@ ID_EX_Reg
   .out_ReadData2(ID_EX_out_ReadData2_wire),
   .out_rt(ID_EX_out_rt_wire),
   .out_rd(ID_EX_out_rd_wire),
+	.out_rs(ID_EX_out_rs_wire),
   .out_shamt(ID_EX_out_shamt_wire)
 );
 //******************************************************************/
@@ -262,12 +269,50 @@ ArithmeticLogicUnitControl
   .Jr(Jr)
 );
 
+Multiplexer3to1
+#(
+  .NBits(32)
+)
+MUX_ForALUEntryA
+(
+  .Selector(Forward_A_Selector_wire),
+  .MUX_Data0(ID_EX_out_ReadData1_wire),
+  .MUX_Data1(WriteRegisterData_wire),
+	.MUX_Data2(EX_MEM_out_ALUResult_wire),
+  .MUX_Output(Entry_ALU_A_wire)
+);
+
+Multiplexer3to1
+#(
+  .NBits(32)
+)
+MUX_ForRegisterToUse
+(
+  .Selector(Forward_B_Selector_wire),
+  .MUX_Data0(ID_EX_out_ReadData2_wire),
+  .MUX_Data1(WriteRegisterData_wire),
+	.MUX_Data2(EX_MEM_out_ALUResult_wire),
+  .MUX_Output(Register_To_Use_wire)
+);
+
+Multiplexer2to1
+#(
+  .NBits(32)
+)
+MUX_ForALUEntryB
+(
+  .Selector(ID_EX_out_Ctrl_Signals_wire[5]),  //ALUsrc
+  .MUX_Data0(Register_To_Use_wire),
+  .MUX_Data1(ID_EX_out_InmmediateExtend_wire),
+  .MUX_Output(Entry_ALU_B_wire)
+);
+
 ALU
 ArithmeticLogicUnit 
 (
   .ALUOperation(ALUOperation_wire),
-  .A(ID_EX_out_ReadData1_wire),
-  .B(ReadData2OrInmmediate_wire),
+  .A(Entry_ALU_A_wire),
+  .B(Entry_ALU_B_wire),
   .Zero(Zero_wire),
   .ALUShamt(ID_EX_out_shamt_wire),
   .ALUResult(ALUResult_wire)
@@ -286,16 +331,17 @@ MUX_ForRTypeAndIType
   .MUX_Output(WriteRegister_wire)
 );
 
-Multiplexer2to1
-#(
-  .NBits(32)
-)
-MUX_ForReadDataAndInmediate
+ForwardingUnit
+ForwardUnit
 (
-  .Selector(ID_EX_out_Ctrl_Signals_wire[5]),  //ALUsrc
-  .MUX_Data0(ID_EX_out_ReadData2_wire),
-  .MUX_Data1(ID_EX_out_InmmediateExtend_wire),
-  .MUX_Output(ReadData2OrInmmediate_wire)
+	.EX_MEM_RegWrite(EX_MEM_out_Ctrl_Signals_wire[4]),
+	.MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[1]),
+	.ID_EX_Rs_Reg(ID_EX_out_rs_wire),
+	.ID_EX_Rt_Reg(ID_EX_out_rt_wire),
+	.EX_MEM_Rd_Reg(EX_MEM_out_WriteData_wire),
+	.MEM_WB_Rd_Reg(MEM_WB_out_Write_Register_wire),
+	.ForwardA(Forward_A_Selector_wire),
+	.ForwardB(Forward_B_Selector_wire)
 );
 
 EX_MEM_Register
@@ -312,7 +358,7 @@ EX_MEM_Reg
   .in_Write_Register(WriteRegister_wire),
   .in_New_PC(AdderShiftedPlusPC4Result_wire),
   .in_ALU_Result(ALUResult_wire),
-  .in_Write_Data(ID_EX_out_ReadData2_wire),
+  .in_Write_Data(Register_To_Use_wire),
   .out_Ctrl_RegWrite(EX_MEM_out_Ctrl_Signals_wire[4]),
   .out_Ctrl_MemToReg(EX_MEM_out_Ctrl_Signals_wire[3]),
   .out_Ctrl_MemRead(EX_MEM_out_Ctrl_Signals_wire[2]),
