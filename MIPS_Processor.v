@@ -278,7 +278,7 @@ MUX_ForALUEntryA
   .Selector(Forward_A_Selector_wire),
   .MUX_Data0(ID_EX_out_ReadData1_wire),
   .MUX_Data1(WriteRegisterData_wire),
-	.MUX_Data2(EX_MEM_out_ALUResult_wire),
+  .MUX_Data2(EX_MEM_out_ALUResult_wire),
   .MUX_Output(Entry_ALU_A_wire)
 );
 
@@ -291,7 +291,7 @@ MUX_ForRegisterToUse
   .Selector(Forward_B_Selector_wire),
   .MUX_Data0(ID_EX_out_ReadData2_wire),
   .MUX_Data1(WriteRegisterData_wire),
-	.MUX_Data2(EX_MEM_out_ALUResult_wire),
+  .MUX_Data2(EX_MEM_out_ALUResult_wire),
   .MUX_Output(Register_To_Use_wire)
 );
 
@@ -338,7 +338,7 @@ ForwardUnit
 	.MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[1]),
 	.ID_EX_Rs_Reg(ID_EX_out_rs_wire),
 	.ID_EX_Rt_Reg(ID_EX_out_rt_wire),
-	.EX_MEM_Rd_Reg(EX_MEM_out_WriteData_wire),
+	.EX_MEM_Rd_Reg(EX_MEM_out_WriteRegister_wire),
 	.MEM_WB_Rd_Reg(MEM_WB_out_Write_Register_wire),
 	.ForwardA(Forward_A_Selector_wire),
 	.ForwardB(Forward_B_Selector_wire)
