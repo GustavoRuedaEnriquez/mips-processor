@@ -4,7 +4,6 @@ module ALU
   input [31:0] A,
   input [31:0] B,
   input [4:0] ALUShamt,
-  output reg Zero,
   output reg [31:0]ALUResult
 );
 
@@ -41,6 +40,5 @@ always @ (A or B or ALUOperation or ALUShamt)
       default:
         ALUResult = 0;
     endcase
-    Zero = (ALUResult==0) ? 1'b1 : 1'b0;
   end
 endmodule 

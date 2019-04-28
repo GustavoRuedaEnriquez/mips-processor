@@ -5,10 +5,7 @@ module EX_MEM_Register(
   input in_Ctrl_MemToReg,
   input in_Ctrl_MemRead,
   input in_Ctrl_MemWrite,
-  input in_Ctrl_Branch_Equal,
-  input in_zero,
   input [4:0]  in_Write_Register,
-  input [31:0] in_New_PC,
   input [31:0] in_ALU_Result,
   input [31:0] in_Write_Data,
   
@@ -16,10 +13,7 @@ module EX_MEM_Register(
   output reg out_Ctrl_MemToReg,
   output reg out_Ctrl_MemRead,
   output reg out_Ctrl_MemWrite,
-  output reg out_Ctrl_Branch_Equal,
-  output reg out_zero,
   output reg [4:0]  out_Write_Register,
-  output reg [31:0] out_New_PC,
   output reg [31:0] out_ALU_Result,
   output reg [31:0] out_Write_Data
 );
@@ -31,10 +25,7 @@ module EX_MEM_Register(
       out_Ctrl_MemToReg     <= 0;
       out_Ctrl_MemRead      <= 0;
       out_Ctrl_MemWrite     <= 0;
-      out_Ctrl_Branch_Equal <= 0;
-      out_zero              <= 0;
       out_Write_Register    <= 0;
-      out_New_PC            <= 0;
       out_ALU_Result        <= 0;
       out_Write_Data        <= 0;
     end 
@@ -44,10 +35,7 @@ module EX_MEM_Register(
       out_Ctrl_MemToReg     <= in_Ctrl_MemToReg;
       out_Ctrl_MemRead      <= in_Ctrl_MemRead;
       out_Ctrl_MemWrite     <= in_Ctrl_MemWrite;
-      out_Ctrl_Branch_Equal <= in_Ctrl_Branch_Equal;
-      out_zero              <= in_zero;
       out_Write_Register    <= in_Write_Register;
-      out_New_PC            <= in_New_PC;
       out_ALU_Result        <= in_ALU_Result;
       out_Write_Data        <= in_Write_Data;
     end

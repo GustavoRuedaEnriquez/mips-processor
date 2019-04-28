@@ -12,12 +12,11 @@ module ID_EX_Register
   input in_Ctrl_RegDst,
   input [31:0] in_InmmediateExtend,
   input [5:0]  in_funct,
-  input [31:0] in_PC_4,
   input [31:0] in_ReadData1,
   input [31:0] in_ReadData2,
   input [4:0]  in_rt,
   input [4:0]  in_rd,
-	input [4:0]	 in_rs,
+  input [4:0]	in_rs,
   input [4:0]  in_shamt,
   
   output reg out_Ctrl_RegWrite,
@@ -30,12 +29,11 @@ module ID_EX_Register
   output reg out_Ctrl_RegDst,
   output reg [31:0] out_InmmediateExtend,
   output reg [5:0]  out_funct,
-  output reg [31:0] out_PC_4,
   output reg [31:0] out_ReadData1,
   output reg [31:0] out_ReadData2,
   output reg [4:0]  out_rt,
   output reg [4:0]  out_rd,
-	output reg [4:0]  out_rs,
+  output reg [4:0]  out_rs,
   output reg [4:0]  out_shamt
 );
 
@@ -52,12 +50,11 @@ always@(negedge reset or posedge clk) begin
       out_Ctrl_RegDst      <= 0;
       out_InmmediateExtend <= 0;
       out_funct            <= 0;
-      out_PC_4             <= 0;
       out_ReadData1        <= 0;
       out_ReadData2        <= 0;
       out_rt               <= 0;
       out_rd               <= 0;
-			out_rs               <= 0;
+		out_rs               <= 0;
       out_shamt            <= 0;
     end
   else
@@ -72,12 +69,11 @@ always@(negedge reset or posedge clk) begin
       out_Ctrl_RegDst      <= in_Ctrl_RegDst;
       out_InmmediateExtend <= in_InmmediateExtend;
       out_funct            <= in_funct;
-      out_PC_4             <= in_PC_4;
       out_ReadData1        <= in_ReadData1;
       out_ReadData2        <= in_ReadData2;
       out_rt               <= in_rt;
       out_rd               <= in_rd;
-			out_rs               <= in_rs;
+		out_rs               <= in_rs;
       out_shamt            <= in_shamt;
     end
 end
