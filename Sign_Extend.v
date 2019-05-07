@@ -4,7 +4,7 @@ module SignExtend
   output[31:0] SignExtendOutput
 );
 
-assign  SignExtendOutput = {{16{DataInput[15]}},DataInput[15:0]};
+  assign  SignExtendOutput = {{16{DataInput[15]}},DataInput[15:0]};
 
 endmodule 
 

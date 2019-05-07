@@ -10,6 +10,6 @@ module Adder32bits
   output [NBits-1:0] Result
 );
 
-assign Result = Data1 + Data0;
+  assign Result = Data1 + Data0;
 
 endmodule

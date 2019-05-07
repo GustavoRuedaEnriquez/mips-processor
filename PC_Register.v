@@ -11,11 +11,12 @@ module PC_Register
   output reg [N-1:0] PCValue
 );
 
-always@(negedge reset or posedge clk) begin
-  if(reset==0)
-    PCValue <= 32'h0040_0000;
-  else if(Block_PC_Write != 1) 
-    PCValue<=NewPC;
-end
+  always@(negedge reset or posedge clk)
+  begin
+    if(reset==0)
+      PCValue <= 32'h0040_0000;
+    else if(Block_PC_Write != 1) 
+      PCValue<=NewPC;
+  end
 
 endmodule

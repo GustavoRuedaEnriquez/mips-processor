@@ -13,13 +13,11 @@ module DataMemory
   // Declare the RAM variable
   reg [DATA_WIDTH-1:0] ram[MEMORY_DEPTH-1:0];
   wire [DATA_WIDTH-1:0] ReadDataAux;
-
   always @ (posedge clk)
-    begin
-      if (MemWrite)
-        ram[Address] <= WriteData;
-    end
-  
+  begin
+    if (MemWrite)
+      ram[Address] <= WriteData;
+  end
   assign ReadDataAux = ram[Address];
   assign ReadData = {DATA_WIDTH{MemRead}}& ReadDataAux;
 

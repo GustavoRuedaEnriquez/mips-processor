@@ -99,7 +99,6 @@ wire [31:0]  PCPlus8_wire;
 wire [31:0]  BranchAdderMuxOutput_wire;
 wire [31:0]  MUX_PC_wire;
 wire [31:0]  PC_wire;
-//wire [31:0]  ReadData2OrInmmediate_wire;
 wire [31:0]  InmmediateExtendAnded_wire;
 wire [31:0]  PCtoBranch_wire;
 wire [31:0]  PCToROM;
@@ -386,14 +385,14 @@ MUX_ForRTypeAndIType
 ForwardingUnit
 ForwardUnit
 (
-	.EX_MEM_RegWrite(EX_MEM_out_Ctrl_Signals_wire[3]),
-	.MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[0]),
-	.ID_EX_Rs_Reg(ID_EX_out_rs_wire),
-	.ID_EX_Rt_Reg(ID_EX_out_rt_wire),
-	.EX_MEM_Rd_Reg(EX_MEM_out_WriteRegister_wire),
-	.MEM_WB_Rd_Reg(MEM_WB_out_Write_Register_wire),
-	.ForwardA(Forward_A_Selector_wire),
-	.ForwardB(Forward_B_Selector_wire)
+  .EX_MEM_RegWrite(EX_MEM_out_Ctrl_Signals_wire[3]),
+  .MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[0]),
+  .ID_EX_Rs_Reg(ID_EX_out_rs_wire),
+  .ID_EX_Rt_Reg(ID_EX_out_rt_wire),
+  .EX_MEM_Rd_Reg(EX_MEM_out_WriteRegister_wire),
+  .MEM_WB_Rd_Reg(MEM_WB_out_Write_Register_wire),
+  .ForwardA(Forward_A_Selector_wire),
+  .ForwardB(Forward_B_Selector_wire)
 );
 
 EX_MEM_Register

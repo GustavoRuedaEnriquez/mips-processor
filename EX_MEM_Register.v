@@ -18,8 +18,9 @@ module EX_MEM_Register(
   output reg [31:0] out_Write_Data
 );
   
-  always @(negedge reset or posedge  clk) begin
-  if(reset==0) 
+  always @(negedge reset or posedge  clk)
+  begin
+    if(reset==0)
     begin
       out_Ctrl_RegWrite     <= 0;
       out_Ctrl_MemToReg     <= 0;
@@ -29,7 +30,7 @@ module EX_MEM_Register(
       out_ALU_Result        <= 0;
       out_Write_Data        <= 0;
     end 
-  else
+    else
     begin
       out_Ctrl_RegWrite     <= in_Ctrl_RegWrite;
       out_Ctrl_MemToReg     <= in_Ctrl_MemToReg;
