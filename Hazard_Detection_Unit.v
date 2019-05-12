@@ -1,5 +1,6 @@
 module HazardDetectionUnit(
   input Branch,
+	input Jump,
   input ID_EX_MemRead,
   input [4:0] ID_EX_Rt_Reg,
   input [4:0] IF_ID_Rs_Reg,
@@ -25,6 +26,6 @@ module HazardDetectionUnit(
       Block_PC_Write <= 1'b0;
       Block_IF_ID_Write <= 1'b0;
     end
-    Flush <= Branch;
+    Flush <= (Branch|Jump);
   end
 endmodule
