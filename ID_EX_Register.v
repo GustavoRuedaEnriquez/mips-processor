@@ -2,7 +2,7 @@ module ID_EX_Register
 (
   input clk,
   input reset,
-	input in_Ctrl_Jal,
+  input in_Ctrl_Jal,
   input in_Ctrl_RegWrite,
   input in_Ctrl_MemtoReg,
   input in_Ctrl_MemRead,
@@ -11,7 +11,7 @@ module ID_EX_Register
   input [3:0]  in_Ctrl_ALUOp,
   input in_Ctrl_ALUSrc,
   input in_Ctrl_RegDst,
-	input [31:0] in_InmmediateExtend,
+  input [31:0] in_InmmediateExtend,
   input [5:0]  in_funct,
   input [31:0] in_ReadData1,
   input [31:0] in_ReadData2,
@@ -21,7 +21,7 @@ module ID_EX_Register
   input [4:0]  in_shamt,
   
   output reg out_Ctrl_Jal,
-	output reg out_Ctrl_RegWrite,
+  output reg out_Ctrl_RegWrite,
   output reg out_Ctrl_MemtoReg,
   output reg out_Ctrl_MemRead,
   output reg out_Ctrl_MemWrite,

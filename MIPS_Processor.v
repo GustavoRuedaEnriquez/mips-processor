@@ -105,7 +105,7 @@ wire [31:0]  InmmediateExtendAnded_wire;
 wire [31:0]  PCtoBranch_wire;
 wire [31:0]  PCToROM;
 wire [31:0]  ALUToRAM;
-wire [63:0]  IFID_Output_wire;
+wire [31:0]  WriteRegister_wire;
 
 integer ALUStatus;
 
@@ -228,7 +228,7 @@ Register_File
   .clk(clk),  
   .reset(reset),
   .RegWrite(MEM_WB_out_Ctrl_Signals_wire[1]),
-  .WriteRegister(MEM_WB_out_Write_Register_wire),
+  .WriteRegister(WriteRegister_wire),
   .ReadRegister1(IF_ID_out_Instruction_wire[25:21]),
   .ReadRegister2(IF_ID_out_Instruction_wire[20:16]),
   .WriteData(WriteRegisterData_wire),
@@ -303,7 +303,7 @@ ID_EX_Reg
   .in_rd(IF_ID_out_Instruction_wire[15:11]),
   .in_rs(IF_ID_out_Instruction_wire[25:21]),
   .in_shamt(IF_ID_out_Instruction_wire[10:6]),
-	.out_Ctrl_Jal(ID_EX_out_Ctrl_Signals_wire[11]),
+  .out_Ctrl_Jal(ID_EX_out_Ctrl_Signals_wire[11]),
   .out_Ctrl_RegWrite(ID_EX_out_Ctrl_Signals_wire[10]),
   .out_Ctrl_MemtoReg(ID_EX_out_Ctrl_Signals_wire[9]),
   .out_Ctrl_MemRead(ID_EX_out_Ctrl_Signals_wire[8]),
@@ -417,7 +417,7 @@ EX_MEM_Reg
 (
   .clk(clk),
   .reset(reset),
-	.in_Ctrl_Jal(ID_EX_out_Ctrl_Signals_wire[11]),
+  .in_Ctrl_Jal(ID_EX_out_Ctrl_Signals_wire[11]),
   .in_Ctrl_RegWrite(ID_EX_out_Ctrl_Signals_wire[10]),
   .in_Ctrl_MemToReg(ID_EX_out_Ctrl_Signals_wire[9]),
   .in_Ctrl_MemRead(ID_EX_out_Ctrl_Signals_wire[8]),
@@ -425,7 +425,7 @@ EX_MEM_Reg
   .in_Write_Register(WriteRegister_wire),
   .in_ALU_Result(ALUResult_wire),
   .in_Write_Data(Register_To_Use_wire),
-	.out_Ctrl_RegWrite(EX_MEM_out_Ctrl_Signals_wire[4]),
+  .out_Ctrl_Jal(EX_MEM_out_Ctrl_Signals_wire[4]),
   .out_Ctrl_RegWrite(EX_MEM_out_Ctrl_Signals_wire[3]),
   .out_Ctrl_MemToReg(EX_MEM_out_Ctrl_Signals_wire[2]),
   .out_Ctrl_MemRead(EX_MEM_out_Ctrl_Signals_wire[1]),
@@ -465,13 +465,13 @@ MEM_WB_Reg
 (
   .clk(clk),
   .reset(reset),
-	.in_Ctrl_Jal(EX_MEM_out_Ctrl_Signals_wire[4]),
+  .in_Ctrl_Jal(EX_MEM_out_Ctrl_Signals_wire[4]),
   .in_Ctrl_RegWrite(EX_MEM_out_Ctrl_Signals_wire[3]),
   .in_Ctrl_MemToReg(EX_MEM_out_Ctrl_Signals_wire[2]),
   .in_RAM_Read_Data(ReadDataRAM_wire),
   .in_ALU_Result(EX_MEM_out_ALUResult_wire),
   .in_Write_Register(EX_MEM_out_WriteRegister_wire),
-	.out_Ctrl_RegWrite(MEM_WB_out_Ctrl_Signals_wire[2]),
+  .out_Ctrl_Jal(MEM_WB_out_Ctrl_Signals_wire[2]),
   .out_Ctrl_RegWrite(MEM_WB_out_Ctrl_Signals_wire[1]),
   .out_Ctrl_MemToReg(MEM_WB_out_Ctrl_Signals_wire[0]),
   .out_RAM_Read_Data(MEM_WB_out_RAM_Read_Data_wire),
@@ -490,7 +490,7 @@ Multiplexer2to1
 #(
   .NBits(32)
 )
-RAMtoRegMux
+RAMtoRegDataMux
 (
   .Selector(MEM_WB_out_Ctrl_Signals_wire[0]), //MemToReg
   .MUX_Data0(MEM_WB_out_ALU_Result_wire),
@@ -502,7 +502,19 @@ Multiplexer2to1
 #(
   .NBits(32)
 )
-JalMux
+WriteRegisterMux
+(
+  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), 
+  .MUX_Data0(MEM_WB_out_Write_Register_wire),
+  .MUX_Data1(31),
+  .MUX_Output(WriteRegister_wire)
+);
+
+Multiplexer2to1
+#(
+  .NBits(32)
+)
+WriteDataMux
 (
   .Selector(MEM_WB_out_Ctrl_Signals_wire[2]),
   .MUX_Data0(RAMtoReg_MUX_output_wire),

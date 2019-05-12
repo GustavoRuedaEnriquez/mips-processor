@@ -1,14 +1,14 @@
 module MEM_WB_Register(
   input clk,
   input reset,
-	input in_Ctrl_Jal,
+  input in_Ctrl_Jal,
   input in_Ctrl_RegWrite,
   input in_Ctrl_MemToReg,
   input [31:0] in_RAM_Read_Data,
   input [31:0] in_ALU_Result,
   input [4:0]  in_Write_Register,
   
-	output reg out_Ctrl_Jal,
+  output reg out_Ctrl_Jal,
   output reg out_Ctrl_RegWrite,
   output reg out_Ctrl_MemToReg,
   output reg [31:0] out_RAM_Read_Data,
