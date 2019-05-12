@@ -2,6 +2,7 @@ module ID_EX_Register
 (
   input clk,
   input reset,
+	input [31:0] in_PC,
   input in_Ctrl_Jal,
   input in_Ctrl_RegWrite,
   input in_Ctrl_MemtoReg,
@@ -20,7 +21,8 @@ module ID_EX_Register
   input [4:0]  in_rs,
   input [4:0]  in_shamt,
   
-  output reg out_Ctrl_Jal,
+  output reg  [31:0] out_PC,
+	output reg out_Ctrl_Jal,
   output reg out_Ctrl_RegWrite,
   output reg out_Ctrl_MemtoReg,
   output reg out_Ctrl_MemRead,
@@ -42,7 +44,8 @@ module ID_EX_Register
   always@(negedge reset or posedge clk) begin
     if(reset==0)
       begin
-        out_Ctrl_Jal         <= 0;
+        out_PC               <= 0;
+				out_Ctrl_Jal         <= 0;
 				out_Ctrl_RegWrite    <= 0;
         out_Ctrl_MemtoReg    <= 0;
         out_Ctrl_MemRead     <= 0;
@@ -62,6 +65,7 @@ module ID_EX_Register
       end
     else
       begin
+			  out_PC               <= in_PC;
         out_Ctrl_Jal         <= in_Ctrl_Jal;
 				out_Ctrl_RegWrite    <= in_Ctrl_RegWrite;
         out_Ctrl_MemtoReg    <= in_Ctrl_MemtoReg;
