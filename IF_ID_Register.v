@@ -19,10 +19,6 @@ module IF_ID_Register
       out_Instruction <= 0;
     end
     else if(!Block_IF_ID_Write)
-//		  begin
-//        out_PC_4        <= in_PC_4;
-//        out_Instruction <= in_Instruction;
-//      end
     begin
       if(Flush)
       begin
