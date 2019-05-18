@@ -87,6 +87,7 @@ wire [12:0] Ctrl_Mux_Output_wire;
 wire Branch_Selector_wire;
 
 wire [31:0] Branch_MUX_Output;
+wire [31:0] Jump_MUX_Output;
 wire [31:0] RAMtoReg_MUX_output_wire;
 wire BranchNE_wire;
 wire ORForBranch;
@@ -99,7 +100,6 @@ wire [31:0]  WriteRegisterData_wire;
 wire [31:0]  ShifthLeft2BranchOutput_wire;
 wire [31:0]  JumpAdderMuxOutput;
 wire [31:0]  NextPC_wire;
-wire [31:0]  BranchAdderMuxOutput_wire;
 wire [31:0]  MUX_PC_wire;
 wire [31:0]  PC_wire;
 wire [31:0]  InmmediateExtendAnded_wire;
@@ -117,12 +117,36 @@ Multiplexer2to1
 #(
   .NBits(32)
 )
-MUX_ForPC
+MUX_PC_Branch
 (
   .Selector(Branch_Selector_wire),
   .MUX_Data0(PC_4_wire),
   .MUX_Data1(AdderShiftedPlusPC4Result_wire),
   .MUX_Output(Branch_MUX_Output)
+);
+
+Multiplexer2to1
+#(
+  .NBits(32)
+)
+MUX_PC_Jump
+(
+  .Selector(Jump),
+  .MUX_Data0(Branch_MUX_Output),
+  .MUX_Data1({IF_ID_out_PC_4_wire[31:28],IF_ID_out_Instruction_wire[27:0]<<2}),
+  .MUX_Output(Jump_MUX_Output)
+);
+
+Multiplexer2to1
+#(
+ .NBits(32)
+)
+MUX_PC_Jr
+(
+ .Selector(Jr),
+ .MUX_Data0(Jump_MUX_Output),
+ .MUX_Data1(ReadData1_wire),
+ .MUX_Output(NextPC_wire)
 );
 
 PC_Register
@@ -183,7 +207,7 @@ HazardDetectionUnit
 Hazard
 (
   .Branch(Branch_Selector_wire),
-	.Jump(Jump),
+	.Jump(Jump|Jr),
   .ID_EX_MemRead(ID_EX_out_Ctrl_Signals_wire[8]),
   .ID_EX_Rt_Reg(ID_EX_out_rt_wire),
   .IF_ID_Rs_Reg(IF_ID_out_Instruction_wire[25:21]),
@@ -198,6 +222,7 @@ Control
 ControlUnit
 (
   .OP(IF_ID_out_Instruction_wire[31:26]),
+  .funct(IF_ID_out_Instruction_wire[5:0]),
   .RegDst(RegDst_wire),
   .BranchNE(BranchNE_wire),
   .BranchEQ(BranchEQ_wire),
@@ -208,7 +233,8 @@ ControlUnit
   .MemRead(MemRead),
   .MemtoReg(MemtoReg),
   .Jump(Jump),
-  .Jal(Jal)
+  .Jal(Jal),
+  .Jr(Jr)
 );
 
 Multiplexer2to1
@@ -239,7 +265,7 @@ Register_File
 );
 
 BranchBox
-Branch
+Branch_Box
 (
   .reg1(ReadData1_wire),
   .reg2(ReadData2_wire),
@@ -249,37 +275,25 @@ Branch
 );
 
 SignExtend
-SignExtendForConstants
+Sign_Extend_For_Constants
 (   
   .DataInput(IF_ID_out_Instruction_wire[15:0]),
   .SignExtendOutput(InmmediateExtend_wire)
 );
 
 ShiftLeft2
-ShiftLeft2Branch
+Shift_Left_2_Branch
 (
   .DataInput(InmmediateExtend_wire),
   .DataOutput(ShifthLeft2BranchOutput_wire)
 );
 
 Adder32bits
-AdderShiftedPlusPC4
+Adder_Shifted_PlusPC4
 (
   .Data0(ShifthLeft2BranchOutput_wire),
   .Data1(IF_ID_out_PC_4_wire),
   .Result(AdderShiftedPlusPC4Result_wire)
-);
-
-Multiplexer2to1
-#(
-  .NBits(32)
-)
-JumpMux
-(
-  .Selector(Jump),
-  .MUX_Data0(Branch_MUX_Output),
-  .MUX_Data1({IF_ID_out_PC_4_wire[31:28],IF_ID_out_Instruction_wire[27:0]<<2}),
-  .MUX_Output(NextPC_wire)
 );
 
 ID_EX_Register
@@ -337,8 +351,7 @@ ArithmeticLogicUnitControl
 (
   .ALUOp(ID_EX_out_Ctrl_Signals_wire[3:0]),
   .ALUFunction(ID_EX_out_funct_wire),
-  .ALUOperation(ALUOperation_wire),
-  .Jr(Jr)
+  .ALUOperation(ALUOperation_wire)
 );
 
 Multiplexer3to1
@@ -529,31 +542,6 @@ MUX_WriteRegister
   .MUX_Data1(31),
   .MUX_Output(WriteRegister_MUX_output_wire)
 );
-
-Multiplexer2to1
-#(
-  .NBits(32)
-)
-MUX_BranchAdder
-(
-  .Selector(ORForBranch),
-  .MUX_Data0(PC_4_wire),
-  .MUX_Data1(AdderShiftedPlusPC4Result_wire),
-  .MUX_Output(BranchAdderMuxOutput_wire)
-);
-
-
-//Multiplexer2to1
-//#(
-//  .NBits(32)
-//)
-//JrAdderMux
-//(
-//  .Selector(Jr),
-//  .MUX_Data0(JumpAdderMuxOutput),
-//  .MUX_Data1(ReadData1_wire),
-//  .MUX_Output(NextPC_wire)
-//);
 
 endmodule
 

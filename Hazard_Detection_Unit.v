@@ -13,19 +13,19 @@ module HazardDetectionUnit(
 );
 
   always @(*)
-  begin 
-    if(ID_EX_MemRead && ((ID_EX_Rt_Reg == IF_ID_Rs_Reg) || (ID_EX_Rt_Reg == IF_ID_Rt_Reg)))
-    begin
-      Stall <= 1'b1;
-      Block_PC_Write <= 1'b1;
-      Block_IF_ID_Write <= 1'b1;
+    begin 
+      if(ID_EX_MemRead && ((ID_EX_Rt_Reg == IF_ID_Rs_Reg) || (ID_EX_Rt_Reg == IF_ID_Rt_Reg)))
+      begin
+        Stall <= 1'b1;
+        Block_PC_Write <= 1'b1;
+        Block_IF_ID_Write <= 1'b1;
+      end
+      else
+      begin
+        Stall <= 1'b0;
+        Block_PC_Write <= 1'b0;
+        Block_IF_ID_Write <= 1'b0;
+      end
+      Flush <= (Branch|Jump);
     end
-    else
-    begin
-      Stall <= 1'b0;
-      Block_PC_Write <= 1'b0;
-      Block_IF_ID_Write <= 1'b0;
-    end
-    Flush <= (Branch|Jump);
-  end
 endmodule

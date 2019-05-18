@@ -2,10 +2,8 @@ module ALUControl
 (
   input [3:0] ALUOp,
   input [5:0] ALUFunction,
-  output Jr,
   output [3:0] ALUOperation
 );
-
 
   localparam R_Type_AND  = 10'b0111_100100;
   localparam R_Type_OR   = 10'b0111_100101;
@@ -19,12 +17,11 @@ module ALUControl
   localparam I_Type_ANDI = 10'b0101_xxxxxx;
   localparam I_Type_ORI  = 10'b0110_xxxxxx;
   localparam I_Type_LUI  = 10'b0011_xxxxxx;
-  localparam I_Type_BEQ  = 10'b1000_xxxxxx;
-  localparam I_Type_BNE  = 10'b1001_xxxxxx;
+  //localparam I_Type_BEQ  = 10'b1000_xxxxxx;
+  //localparam I_Type_BNE  = 10'b1001_xxxxxx;
   localparam I_Type_LW   = 10'b1010_xxxxxx;
   localparam I_Type_SW   = 10'b1011_xxxxxx;
 
-  reg Jr_wire;
   reg [3:0] ALUControlValues;
   wire [9:0] Selector;
 
@@ -45,19 +42,14 @@ module ALUControl
       I_Type_ORI : ALUControlValues = 4'b0001;
       I_Type_LUI : ALUControlValues = 4'b1000;
       I_Type_ANDI: ALUControlValues = 4'b0000;
-      I_Type_BEQ : ALUControlValues = 4'b1001;
-      I_Type_BNE : ALUControlValues = 4'b1001;
+      //I_Type_BEQ : ALUControlValues = 4'b1001;
+      //I_Type_BNE : ALUControlValues = 4'b1001;
       I_Type_LW  : ALUControlValues = 4'b0011;
       I_Type_SW  : ALUControlValues = 4'b0011;
       default:     ALUControlValues = 4'b1111;
     endcase
-    case(Selector)
-      R_Type_JR  : Jr_wire = 1'b1;  
-      default    : Jr_wire = 1'b0;
-    endcase
   end
 
-  assign Jr = Jr_wire;                    //Jr MUX Selector.
   assign ALUOperation = ALUControlValues; //ALU's opcode.
 
 endmodule

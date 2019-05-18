@@ -1,7 +1,9 @@
 module Control
 (
-  input [5:0]OP,
-  
+  input [5:0] OP,
+  input [5:0] funct, 
+
+  output Jr,
   output Jal,
   output Jump,
   output RegDst,
@@ -28,10 +30,11 @@ module Control
   localparam J_Type_JAL   = 6'b000011;
 
   reg [13:0] ControlValues;
+  reg Jr_Reg;
 
 
   //Here we activate all the needed flags depending of the instruction.
-  always@(OP) begin
+  always@(*) begin
     casex(OP)
       R_Type     : ControlValues = 14'b001_001_00_00_0111; 
       I_Type_ADDI: ControlValues = 14'b000_101_00_00_0100;
@@ -44,12 +47,13 @@ module Control
       I_Type_SW  : ControlValues = 14'b000_100_01_00_1011;
       J_Type_J   : ControlValues = 14'b010_000_00_00_0001;
       J_Type_JAL : ControlValues = 14'b110_001_00_00_0010;
-      
       default:
         ControlValues= 14'b0;
-      endcase
+    endcase
+    Jr_Reg = ( OP == 3'b000 && funct == 4'b1000) ? 1'b1 : 1'b0;
   end
 
+  assign Jr       = Jr_Reg;
   assign Jal      = ControlValues[13];  //Jal MUX Selector.
   assign Jump     = ControlValues[12];  //Jump MUX Selector.
   assign RegDst   = ControlValues[11];  //RegDest MUX Selector.

@@ -7,20 +7,12 @@ module BranchBox(
   output reg Branch
 );
   
-  always @(*)
-  begin 
-    if(BEQ_Option == 1 && reg1 == reg2)
+  reg Equal;
+	
+  always@(*)
     begin
-      Branch <= 1'b1;
+      Equal = (reg1 == reg2) ? 1'b1 : 1'b0;
+      Branch = (BEQ_Option && Equal) || (BNE_Option && ~Equal);
     end
-    else if(BNE_Option == 1 && reg1 != reg2)
-    begin
-      Branch <=  1'b1;
-    end
-    else
-    begin
-      Branch <= 1'b0;
-    end
-  end
   
 endmodule
