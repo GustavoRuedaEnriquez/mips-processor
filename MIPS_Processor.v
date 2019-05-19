@@ -168,7 +168,7 @@ PC_Plus_4
 );
 
 Adder32bits
-AdderPCToROM
+Adder_PC_To_ROM
 (
   .Data0(PC_wire),
   .Data1(32'hFFC0_0000),
@@ -179,7 +179,7 @@ ProgramMemory
 #(
   .MEMORY_DEPTH(MEMORY_DEPTH)
 )
-ROMProgramMemory
+ROM_Program_Memory
 (
   .Address(PCToROM),
   .Instruction(Instruction_wire)
@@ -219,7 +219,7 @@ Hazard
 );
 
 Control
-ControlUnit
+Control_Unit
 (
   .OP(IF_ID_out_Instruction_wire[31:26]),
   .funct(IF_ID_out_Instruction_wire[5:0]),
@@ -241,12 +241,24 @@ Multiplexer2to1
 #(
   .NBits(12)
 )
-MUX_ForControl
+MUX_For_Control
 (
   .Selector(Stall_wire),
   .MUX_Data0({Jal,RegWrite_wire,MemtoReg,MemRead,MemWrite,BranchEQ_wire,ALUSrc_wire,RegDst_wire,ALUOp_wire}),
   .MUX_Data1(12'b000000000000),
   .MUX_Output(Ctrl_Mux_Output_wire)
+);
+
+Multiplexer2to1
+#(
+  .NBits(32)
+)
+MUX_Write_Register
+(
+  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), //Jal
+  .MUX_Data0(MEM_WB_out_Write_Register_wire),
+  .MUX_Data1(31),
+  .MUX_Output(WriteRegister_MUX_output_wire)
 );
 
 RegisterFile
@@ -347,7 +359,7 @@ ID_EX_Reg
 //******************************************************************/
 
 ALUControl
-ArithmeticLogicUnitControl
+Arithmetic_Logic_Unit_Control
 (
   .ALUOp(ID_EX_out_Ctrl_Signals_wire[3:0]),
   .ALUFunction(ID_EX_out_funct_wire),
@@ -358,7 +370,7 @@ Multiplexer3to1
 #(
   .NBits(32)
 )
-MUX_ForALUEntryA
+MUX_For_ALU_Entry_A
 (
   .Selector(Forward_A_Selector_wire),
   .MUX_Data0(ID_EX_out_ReadData1_wire),
@@ -371,7 +383,7 @@ Multiplexer3to1
 #(
   .NBits(32)
 )
-MUX_ForRegisterToUse
+MUX_For_Register_To_Use
 (
   .Selector(Forward_B_Selector_wire),
   .MUX_Data0(ID_EX_out_ReadData2_wire),
@@ -384,7 +396,7 @@ Multiplexer2to1
 #(
   .NBits(32)
 )
-MUX_ForALUEntryB
+MUX_For_ALU_Entry_B
 (
   .Selector(ID_EX_out_Ctrl_Signals_wire[5]),  //ALUsrc
   .MUX_Data0(Register_To_Use_wire),
@@ -393,7 +405,7 @@ MUX_ForALUEntryB
 );
 
 ALU
-ArithmeticLogicUnit 
+Arithmetic_Logic_Unit 
 (
   .ALUOperation(ALUOperation_wire),
   .A(Entry_ALU_A_wire),
@@ -407,7 +419,7 @@ Multiplexer2to1
 #(
   .NBits(5)
 )
-MUX_ForRTypeAndIType
+MUX_For_R_Type_And_I_Type
 (
   .Selector(ID_EX_out_Ctrl_Signals_wire[4]),  //RedDest
   .MUX_Data0(ID_EX_out_rt_wire),
@@ -416,10 +428,10 @@ MUX_ForRTypeAndIType
 );
 
 ForwardingUnit
-ForwardUnit
+Forward_Unit
 (
   .EX_MEM_RegWrite(EX_MEM_out_Ctrl_Signals_wire[3]),
-  .MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[0]),
+  .MEM_WB_RegWrite(MEM_WB_out_Ctrl_Signals_wire[1]),
   .ID_EX_Rs_Reg(ID_EX_out_rs_wire),
   .ID_EX_Rt_Reg(ID_EX_out_rt_wire),
   .EX_MEM_Rd_Reg(EX_MEM_out_WriteRegister_wire),
@@ -460,7 +472,7 @@ EX_MEM_Reg
 
 //******************************************************************/
 Adder32bits
-AdderALUToRAM
+Adder_ALU_To_RAM
 (
   .Data0(EX_MEM_out_ALUResult_wire),
   .Data1(32'hEFFF_0000),
@@ -510,7 +522,7 @@ Multiplexer2to1
 #(
   .NBits(32)
 )
-RAMtoRegDataMux
+MUX_RAM_to_Reg_Data
 (
   .Selector(MEM_WB_out_Ctrl_Signals_wire[0]), //MemToReg
   .MUX_Data0(MEM_WB_out_ALU_Result_wire),
@@ -531,17 +543,7 @@ MUX_WriteData
 );
 
 
-Multiplexer2to1
-#(
-  .NBits(32)
-)
-MUX_WriteRegister
-(
-  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), 
-  .MUX_Data0(MEM_WB_out_Write_Register_wire),
-  .MUX_Data1(31),
-  .MUX_Output(WriteRegister_MUX_output_wire)
-);
+
 
 endmodule
 

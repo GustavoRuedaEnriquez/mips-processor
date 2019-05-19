@@ -22,7 +22,7 @@ module ForwardingUnit(
     begin
       ForwardB <= 2'b10;
     end
-     if(MEM_WB_RegWrite && (MEM_WB_Rd_Reg != 0) && (EX_MEM_Rd_Reg != ID_EX_Rs_Reg) && (MEM_WB_Rd_Reg == ID_EX_Rs_Reg)) 
+    if(MEM_WB_RegWrite && (MEM_WB_Rd_Reg != 0) && (EX_MEM_Rd_Reg != ID_EX_Rs_Reg) && (MEM_WB_Rd_Reg == ID_EX_Rs_Reg)) 
     begin
       ForwardA <= 2'b01;
     end
