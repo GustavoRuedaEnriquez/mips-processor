@@ -35,23 +35,22 @@ main:
 # $a2 - spare - It refers to the auxiliary tower's top.
 # $a3 - finish - It refers to the tower's top where the disk must end.
 hanoiTower:
-    
+    add $zero,$zero,$zero
+    add $zero,$zero,$zero
     bne $a0, $s4, recursion	#Stop condition: disk == 1?
-	
+       
     addi $a1,$a1,-4   #(*tower)--
-    add $zero,$zero,$zero
-    add $zero,$zero,$zero
     lw $t0,0($a1)     #int number = **tower	
     sw $zero, 0($a1)  #Free the old stack's top		
     sw $t0,0($a3)     #**tower = disk;		
     add $a3,$a3,4     #(*tower)++;
     
     jr $ra
+    add $zero,$zero,$zero
+    add $zero,$zero,$zero
 	
 recursion:
     addi $sp,$sp, -4    #Reserve stack.
-    add $zero,$zero,$zero
-    add $zero,$zero,$zero
     sw $ra,0($sp)       #Store $ra.
     
     addi $a0,$a0, -1    #disk - 1
@@ -66,8 +65,6 @@ recursion:
     add $a3,$t0,$zero   #Swap: spare -> finish
     
     addi $a1,$a1,-4     #(*tower)--
-    add $zero,$zero,$zero
-    add $zero,$zero,$zero
     lw $t0,0($a1)       #int number = **tower
     sw $zero,0($a1)     #Free the old stack's top		
     sw $t0,0($a3)       #**tower = disk;		
@@ -83,9 +80,11 @@ recursion:
     add $a1,$a2,$zero   #Swap: spare -> start
     add $a2,$t0,$zero   #Swap: start -> spare
     
-    addi $a0, $a0, 1
+    addi $a0,$a0,1
     
     lw $ra,0($sp)       #Restore $ra.
     addi $sp,$sp,4      #Free stack.
     jr $ra
+    add $zero,$zero,$zero
+    add $zero,$zero,$zero
 exit:

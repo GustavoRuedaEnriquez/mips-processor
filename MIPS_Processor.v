@@ -249,18 +249,6 @@ MUX_For_Control
   .MUX_Output(Ctrl_Mux_Output_wire)
 );
 
-Multiplexer2to1
-#(
-  .NBits(32)
-)
-MUX_Write_Register
-(
-  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), //Jal
-  .MUX_Data0(MEM_WB_out_Write_Register_wire),
-  .MUX_Data1(31),
-  .MUX_Output(WriteRegister_MUX_output_wire)
-);
-
 RegisterFile
 Register_File
 (
@@ -435,7 +423,7 @@ Forward_Unit
   .ID_EX_Rs_Reg(ID_EX_out_rs_wire),
   .ID_EX_Rt_Reg(ID_EX_out_rt_wire),
   .EX_MEM_Rd_Reg(EX_MEM_out_WriteRegister_wire),
-  .MEM_WB_Rd_Reg(MEM_WB_out_Write_Register_wire),
+  .MEM_WB_Rd_Reg(WriteRegister_MUX_output_wire),
   .ForwardA(Forward_A_Selector_wire),
   .ForwardB(Forward_B_Selector_wire)
 );
@@ -536,12 +524,23 @@ Multiplexer2to1
 )
 MUX_WriteData
 (
-  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]),
+  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), //Jal
   .MUX_Data0(RAMtoReg_MUX_output_wire),
   .MUX_Data1(MEM_WB_out_PC),
   .MUX_Output(WriteRegisterData_wire)
 );
 
+Multiplexer2to1
+#(
+  .NBits(32)
+)
+MUX_Write_Register
+(
+  .Selector(MEM_WB_out_Ctrl_Signals_wire[2]), //Jal
+  .MUX_Data0(MEM_WB_out_Write_Register_wire),
+  .MUX_Data1(31),
+  .MUX_Output(WriteRegister_MUX_output_wire)
+);
 
 
 
