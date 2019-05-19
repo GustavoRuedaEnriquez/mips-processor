@@ -4,7 +4,6 @@ module MUXRegisterFile
 )
 (
   input [4:0] Selector,
-
   input [N-1:0] Data_0,
   input [N-1:0] Data_1,
   input [N-1:0] Data_2,
@@ -42,41 +41,41 @@ module MUXRegisterFile
   
 );
 
-always@(*)begin
-  case(Selector)
-    0: MUX_Output = Data_0;
-    1: MUX_Output = Data_1;
-    2: MUX_Output = Data_2;
-    3: MUX_Output = Data_3;
-    4: MUX_Output = Data_4;
-    5: MUX_Output = Data_5;
-    6: MUX_Output = Data_6;
-    7: MUX_Output = Data_7;
-    8: MUX_Output = Data_8;
-    9: MUX_Output = Data_9;
-    10: MUX_Output = Data_10;
-    11: MUX_Output = Data_11;
-    12: MUX_Output = Data_12;
-    13: MUX_Output = Data_13;
-    14: MUX_Output = Data_14;
-    15: MUX_Output = Data_15;
-    16: MUX_Output = Data_16;
-    17: MUX_Output = Data_17;
-    18: MUX_Output = Data_18;
-    19: MUX_Output = Data_19;
-    20: MUX_Output = Data_20;
-    21: MUX_Output = Data_21;
-    22: MUX_Output = Data_22;
-    23: MUX_Output = Data_23;
-    24: MUX_Output = Data_24;
-    25: MUX_Output = Data_25;
-    26: MUX_Output = Data_26;
-    27: MUX_Output = Data_27;
-    28: MUX_Output = Data_28;
-    29: MUX_Output = Data_29;
-    30: MUX_Output = Data_30;
-    31: MUX_Output = Data_31;
-  endcase
-end
+  always@(*)begin
+    case(Selector)
+      0:  MUX_Output = Data_0;
+      1:  MUX_Output = Data_1;
+      2:  MUX_Output = Data_2;
+      3:  MUX_Output = Data_3;
+      4:  MUX_Output = Data_4;
+      5:  MUX_Output = Data_5;
+      6:  MUX_Output = Data_6;
+      7:  MUX_Output = Data_7;
+      8:  MUX_Output = Data_8;
+      9:  MUX_Output = Data_9;
+      10: MUX_Output = Data_10;
+      11: MUX_Output = Data_11;
+      12: MUX_Output = Data_12;
+      13: MUX_Output = Data_13;
+      14: MUX_Output = Data_14;
+      15: MUX_Output = Data_15;
+      16: MUX_Output = Data_16;
+      17: MUX_Output = Data_17;
+      18: MUX_Output = Data_18;
+      19: MUX_Output = Data_19;
+      20: MUX_Output = Data_20;
+      21: MUX_Output = Data_21;
+      22: MUX_Output = Data_22;
+      23: MUX_Output = Data_23;
+      24: MUX_Output = Data_24;
+      25: MUX_Output = Data_25;
+      26: MUX_Output = Data_26;
+      27: MUX_Output = Data_27;
+      28: MUX_Output = Data_28;
+      29: MUX_Output = Data_29;
+      30: MUX_Output = Data_30;
+      31: MUX_Output = Data_31;
+    endcase
+  end
 
 endmodule

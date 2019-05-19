@@ -8,16 +8,16 @@ module ProgramMemory
   input [(DATA_WIDTH-1):0] Address,
   output reg [(DATA_WIDTH-1):0] Instruction
 );
-wire [(DATA_WIDTH-1):0] RealAddress;
+  wire [(DATA_WIDTH-1):0] RealAddress;
 
-assign RealAddress = {2'b0,Address[(DATA_WIDTH-1):2]};
+  assign RealAddress = {2'b0,Address[(DATA_WIDTH-1):2]};
 
   // Declare the ROM variable
   reg [DATA_WIDTH-1:0] rom[MEMORY_DEPTH-1:0];
 
   initial
   begin
-    $readmemh("C:/MIPSProjects/P3-Briones-Rueda/Sources/text.dat", rom);
+    $readmemh("C:/MIPSProjects/MIPS-Processor/Sources/text.dat", rom);
   end
 
   always @ (RealAddress)

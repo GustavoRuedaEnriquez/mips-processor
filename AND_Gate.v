@@ -5,7 +5,7 @@ module ANDGate
   output reg C
 );
 
-always@(*)
-  C = A & B;
+  always@(*)
+    C = A & B;
 
 endmodule
