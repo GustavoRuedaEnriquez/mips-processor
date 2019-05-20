@@ -44,15 +44,12 @@ hanoiTower:
     sw $zero, 0($a1)  #Free the old stack's top		
     sw $t0,0($a3)     #**tower = disk;		
     add $a3,$a3,4     #(*tower)++;
-    
     jr $ra
-    add $zero,$zero,$zero
-    add $zero,$zero,$zero
-	
+    
 recursion:
     addi $sp,$sp, -4    #Reserve stack.
+
     sw $ra,0($sp)       #Store $ra.
-    
     addi $a0,$a0, -1    #disk - 1
     add $t0,$a2,$zero   #Back up the spare reference.	
     add $a2,$a3,$zero   #Swap: spare -> finish	
@@ -76,15 +73,13 @@ recursion:
     
     jal hanoiTower
     
+    lw $ra,0($sp)       #Restore $ra.
     add $t0,$a1,$zero   #Back up spare reference
     add $a1,$a2,$zero   #Swap: spare -> start
     add $a2,$t0,$zero   #Swap: start -> spare
     
-    addi $a0,$a0,1
-    
-    lw $ra,0($sp)       #Restore $ra.
+    addi $a0,$a0,1   
     addi $sp,$sp,4      #Free stack.
     jr $ra
-    add $zero,$zero,$zero
-    add $zero,$zero,$zero
+    
 exit:
