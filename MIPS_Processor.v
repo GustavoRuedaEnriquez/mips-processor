@@ -175,14 +175,14 @@ Adder_PC_To_ROM
   .Result(PCToROM)
 );
 
-ProgramMemory
+program_memory
 #(
   .MEMORY_DEPTH(MEMORY_DEPTH)
 )
-ROM_Program_Memory
+ROM
 (
-  .Address(PCToROM),
-  .Instruction(Instruction_wire)
+  .address(PCToROM),
+  .instruction(Instruction_wire)
 );
 
 IF_ID_Register
