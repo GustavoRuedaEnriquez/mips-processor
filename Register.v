@@ -1,4 +1,4 @@
-module Register
+module register
 #(
   parameter N=32
 )
@@ -6,17 +6,17 @@ module Register
   input clk,
   input reset,
   input enable,
-  input  [N-1:0] DataInput,
-  
-  output reg [N-1:0] DataOutput
+  input [N-1:0] in_data,
+  output reg [N-1:0] out_data
 );
 
-  always@(negedge reset or negedge clk) begin
+  always@(negedge reset or negedge clk)
+  begin
     if(reset==0)
-      DataOutput <= 0;
+      out_data <= 0;
     else  
       if(enable==1)
-        DataOutput<=DataInput;
+        out_data <= in_data;
   end
 
 endmodule

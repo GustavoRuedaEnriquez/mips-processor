@@ -1,4 +1,4 @@
-module RegisterSP
+module register_sp
 #(
   parameter N=32
 )
@@ -6,18 +6,17 @@ module RegisterSP
   input clk,
   input reset,
   input enable,
-  input  [N-1:0] DataInput,
-  
-  output reg [N-1:0] DataOutput
+  input [N-1:0] in_data,
+  output reg [N-1:0] out_data
 );
 
   always@(negedge reset or posedge clk)
   begin
     if(reset==0)
-      DataOutput <= 32'h1001_1000;
+      out_data <= 32'h1001_1000;
     else  
       if(enable==1)
-        DataOutput<=DataInput;
+        out_data <= in_data;
   end
 
 endmodule

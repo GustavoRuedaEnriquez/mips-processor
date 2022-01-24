@@ -1,4 +1,4 @@
-module RegisterFile
+module register_file
 #(
   parameter N=32
 )
@@ -28,393 +28,325 @@ module RegisterFile
 
   /****************************************************************/
 
-  Register
-  Register_Zero
+  register
+  reg_zero
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[0]&RegWrite),
-    .DataInput(0),
-    .DataOutput(Intercnection_wire[N-1:0])
-  );
-
-
+    .in_data(0),
+    .out_data(Intercnection_wire[N-1:0])
+  ); 
     
-    
-    
-  Register
-  Register_at
+  register
+  reg_at
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[1]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[2*N-1:1*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[2*N-1:1*N])
   );  
-    
-
-    
-  Register
-  Register_v0
+      
+  register
+  reg_v0
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[2]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[3*N-1:2*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[3*N-1:2*N])
   );  
 
-
-  Register
-  Register_v1
+  register
+  reg_v1
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[3]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[4*N-1:3*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[4*N-1:3*N])
   );    
     
-
-
-  Register
-  Register_a0
+  register
+  reg_a0
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[4]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[5*N-1:4*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[5*N-1:4*N])
   );
 
-
-
-  Register
-  Register_a1
+  register
+  reg_a1
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[5]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[6*N-1:5*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[6*N-1:5*N])
   );
 
-
-
-  Register
-  Register_a2
+  register
+  reg_a2
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[6]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[7*N-1:6*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[7*N-1:6*N])
   );
 
-
-
-
-  Register
-  Register_a3
+  register
+  reg_a3
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[7]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[8*N-1:7*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[8*N-1:7*N])
   );
 
-
-
-  Register
-  Register_t0
+  register
+  reg_t0
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[8]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[9*N-1:8*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[9*N-1:8*N])
   );
 
-
-
-  Register
-  Register_t1
+  register
+  reg_t1
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[9]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[10*N-1:9*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[10*N-1:9*N])
   );
 
-
-
-  Register
-  Register_t2
+  register
+  reg_t2
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[10]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[11*N-1:10*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[11*N-1:10*N])
   );
 
-
-
-  Register
-  Register_t3
+  register
+  reg_t3
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[11]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[12*N-1:11*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[12*N-1:11*N])
   );
 
-
-
-  Register
-  Register_t4
+  register
+  reg_t4
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[12]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[13*N-1:12*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[13*N-1:12*N])
   );
 
-
-
-  Register
-  Register_t5
+  register
+  reg_t5
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[13]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[14*N-1:13*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[14*N-1:13*N])
   );
 
-
-
-  Register
-  Register_t6
+  register
+  reg_t6
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[14]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[15*N-1:14*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[15*N-1:14*N])
   );
 
-
-
-  Register
-  Register_t7
+  register
+  reg_t7
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[15]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[16*N-1:15*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[16*N-1:15*N])
   );
 
-
-  Register
-  Register_s0
+  register
+  reg_s0
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[16]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[17*N-1:16*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[17*N-1:16*N])
   );
 
-
-
-  Register
-  Register_s1
+  register
+  reg_s1
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[17]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[18*N-1:17*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[18*N-1:17*N])
   );
 
-
-
-  Register
-  Register_s2
+  register
+  reg_s2
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[18]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[19*N-1:18*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[19*N-1:18*N])
   );
 
-
-
-  Register
-  Register_s3
+  register
+  reg_s3
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[19]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[20*N-1:19*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[20*N-1:19*N])
   );
 
-
-
-
-  Register
-  Register_s4
+  register
+  reg_s4
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[20]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[21*N-1:20*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[21*N-1:20*N])
   );
 
-
-
-
-  Register
-  Register_s5
+  register
+  reg_s5
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[21]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[22*N-1:21*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[22*N-1:21*N])
   );
 
-
-
-
-  Register
-  Register_s6
+  register
+  reg_s6
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[22]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[23*N-1:22*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[23*N-1:22*N])
   );
 
-
-
-
-  Register
-  Register_s7
+  register
+  reg_s7
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[23]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[24*N-1:23*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[24*N-1:23*N])
   );
 
-
-
-  Register
-  Register_t8
+  register
+  reg_t8
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[24]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[25*N-1:24*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[25*N-1:24*N])
   );
 
-  Register
-  Register_t9
+  register
+  reg_t9
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[25]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[26*N-1:25*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[26*N-1:25*N])
   );
 
-
-
-  Register
-  Register_k0
+  register
+  reg_k0
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[26]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[27*N-1:26*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[27*N-1:26*N])
   );
-    
 
-
-  Register
-  Register_k1
+  register
+  reg_k1
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[27]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[28*N-1:27*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[28*N-1:27*N])
   );  
 
-
-
-  Register
-  Register_gp
+  register
+  reg_gp
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[28]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[29*N-1:28*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[29*N-1:28*N])
   );
 
-
-  RegisterSP
-  Register_sp
+  register_sp
+  reg_sp
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[29]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[30*N-1:29*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[30*N-1:29*N])
   );
 
-
-
-
-  Register
-  Register_fp
+  register
+  reg_fp
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[30]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[31*N-1:30*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[31*N-1:30*N])
   );
 
-
-
-  Register
-  Register_ra
+  register
+  reg_ra
   (
     .clk(clk),
     .reset(reset),
     .enable(SelectRegister_wire[31]&RegWrite),
-    .DataInput(WriteData),
-    .DataOutput(Intercnection_wire[32*N-1:31*N])
+    .in_data(WriteData),
+    .out_data(Intercnection_wire[32*N-1:31*N])
   );
-
-
-
 
   MUXRegisterFile
   #(
@@ -433,7 +365,7 @@ module RegisterFile
     .Data_6(Intercnection_wire[7*N-1:6*N]),
     .Data_7(Intercnection_wire[8*N-1:7*N]),
     .Data_8(Intercnection_wire[9*N-1:8*N]),
-     .Data_9(Intercnection_wire[10*N-1:9*N]),
+    .Data_9(Intercnection_wire[10*N-1:9*N]),
     .Data_10(Intercnection_wire[11*N-1:10*N]),
     .Data_11(Intercnection_wire[12*N-1:11*N]),
     .Data_12(Intercnection_wire[13*N-1:12*N]),

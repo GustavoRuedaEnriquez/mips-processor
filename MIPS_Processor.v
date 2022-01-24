@@ -249,8 +249,8 @@ MUX_For_Control
   .MUX_Output(Ctrl_Mux_Output_wire)
 );
 
-RegisterFile
-Register_File
+register_file
+reg_file
 (
   .clk(clk),  
   .reset(reset),
