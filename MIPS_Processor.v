@@ -1,6 +1,6 @@
 module MIPS_Processor
 #(
-  parameter MEMORY_DEPTH = 64
+  parameter MEMORY_DEPTH = 1024
 )
 
 (
@@ -467,15 +467,15 @@ Adder_ALU_To_RAM
   .Result(ALUToRAM)
 );
 
-DataMemory
+data_memory
 RAM
 (
-  .WriteData(EX_MEM_out_WriteData_wire),
-  .Address(ALUToRAM >> 2),
-  .MemWrite(EX_MEM_out_Ctrl_Signals_wire[0]),
-  .MemRead(EX_MEM_out_Ctrl_Signals_wire[1]),
   .clk(clk),
-  .ReadData(ReadDataRAM_wire)
+  .read_enable(EX_MEM_out_Ctrl_Signals_wire[1]),
+  .write_enable(EX_MEM_out_Ctrl_Signals_wire[0]),
+  .in_data(EX_MEM_out_WriteData_wire),
+  .address(ALUToRAM >> 2),
+  .out_data(ReadDataRAM_wire)
 );
 
 MEM_WB_Register

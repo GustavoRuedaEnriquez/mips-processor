@@ -1,7 +1,7 @@
 module ProgramMemory
 #
 (
-  parameter MEMORY_DEPTH=32,
+  parameter MEMORY_DEPTH=256,
   parameter DATA_WIDTH=32
 )
 (
@@ -17,7 +17,7 @@ module ProgramMemory
 
   initial
   begin
-    $readmemh("C:/MIPSProjects/MIPS-Processor/Sources/text.dat", rom);
+    $readmemh("text.dat", rom);
   end
 
   always @ (RealAddress)
