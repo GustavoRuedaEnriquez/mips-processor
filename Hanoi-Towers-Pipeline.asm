@@ -12,8 +12,8 @@ main:
     	sw $t0,0($s1)           #Place a disk in Tower A 
         addi $s1,$s1,4          #Move the Tower A stack pointer one place forward.
         addi $t0,$t0,-1         #Decrease the next disk's number.
-	add $zero,$zero,$zero
-	add $zero,$zero,$zero
+	    add $zero,$zero,$zero
+	    add $zero,$zero,$zero
         beq $t0,$zero,end_for   # disks == 0?
         j for
     end_for: 
